@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "976056548438",
+    "project_id": "rmdb-fed2d",
+    "storage_bucket": "rmdb-fed2d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:976056548438:android:9d24be4e9d62e54f420ff7",
+        "android_client_info": {
+          "package_name": "com.example.movierecomapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "976056548438-bq5248t6o1c9ilpfo1bsbsj87animko2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNZYwg-qhrCpf20ZPAWmNZXSXSzl5SYiw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "976056548438-bq5248t6o1c9ilpfo1bsbsj87animko2.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "976056548438-qqt4gsihkpq6ge3ek4s6ierb0at72i6m.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "Movierecomapp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

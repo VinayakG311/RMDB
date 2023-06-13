@@ -1,0 +1,64 @@
+Model: "model"
+__________________________________________________________________________________________________
+Layer(type)
+Output
+Shape
+Param  # Connected to
+== == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == ==
+input_1(InputLayer)[(None, 1)]
+0[]
+
+input_2(InputLayer)[(None, 1)]
+0[]
+
+embedding(Embedding)(None, 1, 150)
+1056750['input_1[0][0]']
+
+embedding_1(Embedding)(None, 1, 150)
+3333900['input_2[0][0]']
+
+reshape(Reshape)(None, 150)
+0['embedding[0][0]']
+
+reshape_1(Reshape)(None, 150)
+0['embedding_1[0][0]']
+
+concatenate(Concatenate)(None, 300)
+0['reshape[0][0]',
+  'reshape_1[0][0]']
+
+dropout(Dropout)(None, 300)
+0['concatenate[0][0]']
+
+dense(Dense)(None, 32)
+9632['dropout[0][0]']
+
+activation(Activation)(None, 32)
+0['dense[0][0]']
+
+dropout_1(Dropout)(None, 32)
+0['activation[0][0]']
+
+dense_1(Dense)(None, 16)
+528['dropout_1[0][0]']
+
+activation_1(Activation)(None, 16)
+0['dense_1[0][0]']
+
+dropout_2(Dropout)(None, 16)
+0['activation_1[0][0]']
+
+dense_2(Dense)(None, 9)
+153['dropout_2[0][0]']
+
+activation_2(Activation)(None, 9)
+0['dense_2[0][0]']
+
+== == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == == ==
+Total
+params: 4, 400, 963
+Trainable
+params: 4, 400, 963
+Non - trainable
+params: 0
+__________________________________________________________________________________________________
