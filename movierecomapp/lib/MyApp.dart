@@ -10,6 +10,7 @@ import 'package:movierecomapp/components/Drawer.dart';
 import 'MovieDetails.dart';
 import 'WelcomeScreen.dart';
 import 'models.dart';
+const apikey="a4f935f84a9c541b12ffe03282cb7337";
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key, this.firebaseuser, this.userModel});
@@ -57,7 +58,18 @@ class _MyHomePageState extends State<MyHomePage> {
     String url = 'http://127.0.0.1:5000/api/popularmovie';
     late var data;
     String output='nothing';
-
+    UserModel model = widget.userModel!;
+    List movies = model.MoviesWatchedandRated;
+    print(movies);
+    List d= [];
+    var e;
+    for(int i=0;i<movies.length;i++) {
+      var entry = movies[i].keys.forEach((element) {
+        e = element;
+      });
+      print(e);
+      d.add(e);
+    }
     return Scaffold(
       drawer: const Drawers(),
       appBar: AppBar(
@@ -118,20 +130,52 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.all(15.0),
-              child: Text("Coz you watched Avatar",style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold),),
-            ),
+            // SingleChildScrollView(
+            //   scrollDirection: Axis.horizontal,
+            //   child: Row(
+            //     children: [
+            //       MoveTile(
+            //         url: 'http://127.0.0.1:5000/api/collaborative?query=The%20Shawshank%20Redemption',
+            //         firebaseuser: widget.firebaseuser,
+            //         userModel: widget.userModel,),
+            //
+            //     ],
+            //   ),
+            // ),
 
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  MoveTile(url: 'http://127.0.0.1:5000/api/collaborative?query=Avatar',firebaseuser: widget.firebaseuser,userModel: widget.userModel,),
 
-                ],
-              ),
-            ),
+       // SizedBox(height: 50,),
+       //     Text("hi"),
+
+
+              for(int i=1;i<movies.length;i++)
+                Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Text("Coz you watched ${d[i]}",
+                        style: const TextStyle(fontSize: 24, fontWeight: FontWeight
+                            .bold),),
+                    ),
+
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          MoveTile(
+                            url: 'http://127.0.0.1:5000/api/collaborative?query=${d[i]}',
+                            firebaseuser: widget.firebaseuser,
+                            userModel: widget.userModel,),
+
+                        ],
+                      ),
+                    ),
+
+                  ],
+                ),
+
+
+
             const Padding(
               padding: EdgeInsets.all(15.0),
               child: Text("Popular now",style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold),),
@@ -175,6 +219,7 @@ class MoveTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return url!=''?SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Container(
@@ -184,13 +229,11 @@ class MoveTile extends StatelessWidget {
         child: FutureBuilder<List<Movie>>(
           future: fetchdata(url),
           builder: (context,snapshot){
-
             //     print(snapshot.connectionState);
 
             // print(snapshot);
             if(snapshot.connectionState==ConnectionState.done){
               if(snapshot.hasData){
-
                 return ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.horizontal,
@@ -229,11 +272,11 @@ class MoveTile extends StatelessWidget {
               }
               else if(snapshot.hasError){
                 // print(snapshot.error);
-                return Container(child: const Text("hii"),);
+                return Container(child: Text("Error loading list, please try again later"),);
               }
               else {
                 return Container(
-                  child: const Text("hi"),
+                  child: Text("hi"),
                 );
 
               }}
@@ -247,35 +290,34 @@ class MoveTile extends StatelessWidget {
       ),
     )
         :Card(
-    //  color: Colors.white24,
-      child: SizedBox(
-        height: 200,
-        width: 200,
-        child: Column(
-          children: const [
-            Text("data2")
-          ],
-        ),
-      ),
+      child: Text("Try again later"),
     );
   }
 }
 
 
+
 Future<List<Movie>> fetchdata(String url) async {
   Response response = await get(Uri.parse(url));
-
   var decoded1 = jsonDecode(response.body);
   List decoded = decoded1["output"];
-//  print(decoded);
+  print(url);
+  print(decoded);
   List<Movie> x = [];
   var m = decoded.map((e) {
     // print("object");
     // print(e['title']);
     //  print(class(e));
-    x.add(Movie.fromJson(e));
+  //  print(e);
+    Movie er = Movie.fromJson(e);
+ //   print(er);
+    x.add(er);
   });
-  print(m);
+   print(m);
+  // print(x);
+
   return x;
 //  return decoded.map((e) => Movie.fromJson(e)).toList();
 }
+
+

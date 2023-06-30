@@ -57,8 +57,10 @@ class UserModel{
   String? phoneNumber;
   String? DateOfBirth;
   String? Gender;
-  List<dynamic>? MoviesWatched=<int>[];
-  List<dynamic>? MoviesInWatchList=<int>[];
+  //List<dynamic> MoviesWatched=<int>[];
+  List MoviesWatched = [{"0":"0"}];
+  List MoviesWatchedandRated = [{}];
+  List<dynamic>? MoviesInWatchList=[];
   bool? anonymity;
   UserModel({this.uid,this.firstname,this.email,this.phoneNumber});
   UserModel.fromMap(Map<String,dynamic> map){
@@ -72,6 +74,7 @@ class UserModel{
     anonymity=map['anonymity'];
     MoviesInWatchList=map['MoviesInWatchList'];
     MoviesWatched=map['MoviesWatched'];
+    MoviesWatchedandRated=map['MoviesWatchedandRated'];
   }
   Map<String,dynamic> toMap(){
     return{
@@ -84,8 +87,30 @@ class UserModel{
       "Gender":Gender,
       "anonymity":anonymity,
       "MoviesWatched":MoviesWatched,
-      "MoviesInWatchList":MoviesInWatchList
+      "MoviesInWatchList":MoviesInWatchList,
+      "MoviesWatchedandRated":MoviesWatchedandRated
     };
 
   }
+}
+class WatchedMoviesModel {
+  int? MovieId;
+  int? Rating;
+  String? uid;
+  WatchedMoviesModel({required this.MovieId,required this.Rating});
+  WatchedMoviesModel.fromMap(Map<String,dynamic> map){
+    uid = map['uid'];
+    MovieId=map['MovieId'];
+    Rating=map["Rating"];
+  }
+  Map<String,dynamic> toMap(){
+    return{
+      "uid":uid,
+      "MovieId":MovieId,
+      "Rating":Rating,
+
+    };
+
+  }
+
 }

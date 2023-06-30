@@ -22,7 +22,7 @@ class _WatchLaterNowState extends State<WatchLaterNow> {
   @override
   Widget build(BuildContext context) {
     UserModel user = widget.userModel!;
-    List<dynamic> x = widget.val==1?user.MoviesInWatchList!:user.MoviesWatched!;
+    List<dynamic> x = widget.val==1?user.MoviesInWatchList!:user.MoviesWatched;
    // var data=fetchdata("https://api.themoviedb.org/3/movie/949?api_key=${apikey}",x);
 
     return Scaffold(
@@ -34,7 +34,7 @@ class _WatchLaterNowState extends State<WatchLaterNow> {
         child: Column(
           children: [
             FutureBuilder<List<Movie>>(
-              future: fetchdata(x),
+              future: fetchdata(user,widget.val),
               builder: (context,snapshot){
 
                 if(snapshot.connectionState==ConnectionState.done){
@@ -49,7 +49,6 @@ class _WatchLaterNowState extends State<WatchLaterNow> {
                         itemBuilder: (context,index){
                           //         print(snapshot.data![index].MovieName);
                           return InkWell(
-
                             onTap: (){
                               Navigator.push(context, MaterialPageRoute(builder:(context)=>MovieDetails(movie: snapshot.data![index],firebaseuser: widget.firebaseuser,userModel: widget.userModel) ));
                             },
@@ -147,19 +146,44 @@ class _WatchLaterNowState extends State<WatchLaterNow> {
   }
 }
 
-Future<List<Movie>> fetchdata(List<dynamic> entries) async {
-  List<Movie> list = [];
-  for(int i=1;i<entries.length;i++){
-    //print(entries[i]);
-    Response response = await get(Uri.parse("https://api.themoviedb.org/3/movie/${entries[i]}?api_key=${apikey}"));
+Future<List<Movie>> fetchdata(UserModel userModel,int val) async {
+  List<dynamic> data = [];
 
-    var decoded1 = jsonDecode(response.body);
-    Movie movie = Movie.fromJson(decoded1);
-    list.add(movie);
-   // print(movie.MovieName);
+  if(val==1) {
+    List<Movie> list = [];
+    List entries = userModel.MoviesInWatchList!;
+    for (int i = 0; i < entries.length; i++) {
+      //print(entries[i]);
+      Response response = await get(Uri.parse(
+          "https://api.themoviedb.org/3/movie/${entries[i]}?api_key=${apikey}"));
+
+      var decoded1 = jsonDecode(response.body);
+      Movie movie = Movie.fromJson(decoded1);
+      list.add(movie);
+      // print(movie.MovieName);
+    }
+
+    return list;
   }
+  else{
+    List data = userModel.MoviesWatched;
+    List<Movie> l=[];
+    for(int i=1;i<data.length;i++){
+      var e;
+      var entry=data[i].keys.forEach((element) {
+        e=element;
+      });
+      Response response = await get(Uri.parse(
+          "https://api.themoviedb.org/3/movie/${e}?api_key=${apikey}"));
 
-  return list;
+      var decoded1 = jsonDecode(response.body);
+      Movie movie = Movie.fromJson(decoded1);
+      l.add(movie);
+
+    }
+
+    return l;
+  }
 //   List decoded = decoded1["output"];
 // //  print(decoded);
 //   List<Movie> x = [];

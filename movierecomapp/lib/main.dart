@@ -20,8 +20,9 @@ void main() async {
   User? currentUser = FirebaseAuth.instance.currentUser;
 
   if(currentUser!=null){
-
+   // await FirebaseAuth.instance.signOut();
     UserModel? thisUser = await FirebaseHelper.GetUserModelById(currentUser.uid);
+
     if(thisUser!=null){
       runApp(RMDBLoggedin(userModel: thisUser, firebaseuser: currentUser));
 
@@ -51,7 +52,7 @@ class RMDB extends StatelessWidget {
 
       routes:{
         MyApp.id:(context)=>const MyApp(),
-        WelcomeScreen.id:(context)=>const WelcomeScreen(),
+        WelcomeScreen.id:(context)=> WelcomeScreen(),
         LoginScreen.id:(context)=>LoginScreen(),
         RegistrationScreen.id:(context)=>RegistrationScreen(),
         MovieDetails.id:(context)=>const MovieDetails(),
@@ -80,6 +81,9 @@ class RMDBLoggedin extends StatelessWidget {
         MyApp.id:(context)=>MyApp(firebaseuser: firebaseuser,userModel: userModel),
         MovieDetails.id:(context)=>MovieDetails(firebaseuser: firebaseuser,userModel: userModel),
         ProfileScreen.id:(context)=>ProfileScreen(firebaseuser: firebaseuser,userModel: userModel),
+        WelcomeScreen.id:(context)=>WelcomeScreen(),
+        LoginScreen.id:(context)=>LoginScreen(),
+        RegistrationScreen.id:(context)=>RegistrationScreen(),
       },
     );
   }

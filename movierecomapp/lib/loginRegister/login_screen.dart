@@ -93,7 +93,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 final user=await _auth.signInWithEmailAndPassword(email: email, password: password);
                 if(user!=null){
                   String uid = user.user!.uid;
+                //  await FirebaseFirestore.instance.collection('users').doc(uid).set({"MoviesWatched":[{}]});
                   DocumentSnapshot userdata = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+             //     print(userdata.data());
+             //     UserModel newUser;
 
                   UserModel newUser = UserModel.fromMap(userdata.data() as Map<String,dynamic>);
                   Navigator.of(context).push(MaterialPageRoute(builder: (context)=>MyApp(userModel: newUser,firebaseuser: user.user!,)));

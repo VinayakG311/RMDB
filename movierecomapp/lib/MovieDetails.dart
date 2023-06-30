@@ -23,7 +23,10 @@ class _MovieDetailsState extends State<MovieDetails> {
     Movie movie=widget.movie!;
     var x=widget.userModel!;
 
-
+    TextEditingController controller = TextEditingController();
+    int min=0;
+    int max=10;
+    int val=0;
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(color: Colors.white,),
@@ -86,19 +89,88 @@ class _MovieDetailsState extends State<MovieDetails> {
                    Row(
                      children: <Widget>[
                        Expanded(
-                           child: Container(
-                             width: 150.0,
-                             height: 60.0,
-                             alignment: Alignment.center,
-                             decoration: BoxDecoration(
-                                 borderRadius: BorderRadius.circular(10.0),
-                                 color: const Color(0xaa3C3261)),
-                             child: const Text(
-                               'Rate Movie',
-                               style: TextStyle(
-                                   color: Colors.white,
-                                   fontFamily: 'Arvo',
-                                   fontSize: 20.0),
+                           child: InkWell(
+                             onTap:(){
+                               showDialog(context: (context),
+                                   builder: (BuildContext context)=>AlertDialog(
+                                 title: Text("Rate movie"),
+                                     content: TextField(
+                                       controller: controller,
+                                       keyboardType: TextInputType.number,
+                                       onChanged: (String value){
+                                         int x;
+
+                                         if(value==""){
+                                           x=0;
+                                         }
+                                         else {
+                                           x = int.parse(value);
+                                         }
+                                         if(x>=min && x<=max){
+                                           val=x;
+                                         }
+                                         else{
+                                           controller.text="10";
+                                         }
+
+                                       },
+                                     ),
+                                     actions: [
+                                       TextButton(
+                                         onPressed: () => Navigator.pop(context, 'Cancel'),
+                                         child: const Text('Cancel'),
+                                       ),
+                                       TextButton(
+                                         onPressed: () async
+                               {
+                                 print(val);
+                                 UserModel m = widget.userModel!;
+                               //  List<dynamic> l = m.MoviesWatched;
+                                 List l = m.MoviesWatched;
+                                 //    print(m.MoviesInWatchList);
+                                 int j=-1;
+                                 for(int i=0;i<l.length;i++){
+                                   if(l[i].containsKey(movie.MovieId.toString())){
+                                     j=i;
+                                   }
+                                 }
+                                 if(j!=-1){
+                                   m.MoviesWatched[j][movie.MovieId.toString()]=val.toString();
+                                   m.MoviesWatchedandRated[j][movie.MovieName.toString()]=val.toString();
+                                 }
+                                 else {
+                                   m.MoviesWatched.add({movie.MovieId.toString():val.toString()});
+                                   m.MoviesWatchedandRated.add({movie.MovieName.toString():val.toString()});
+
+                                   //    m.MoviesWatched?.add(movie.MovieId!);
+                                 }
+                                 setState(() {
+                                   x=m;
+                                 });
+
+                                 await FirebaseFirestore.instance.collection("users").doc(widget.userModel?.uid).set(m.toMap());
+
+                                 Navigator.pop(context, 'OK');
+                               },
+                                         child: const Text('OK'),
+                                       ),
+                                     ],
+                               ));
+                             },
+                             child: Container(
+                               width: 150.0,
+                               height: 60.0,
+                               alignment: Alignment.center,
+                               decoration: BoxDecoration(
+                                   borderRadius: BorderRadius.circular(10.0),
+                                   color: const Color(0xaa3C3261)),
+                               child: const Text(
+                                 'Rate Movie',
+                                 style: TextStyle(
+                                     color: Colors.white,
+                                     fontFamily: 'Arvo',
+                                     fontSize: 20.0),
+                               ),
                              ),
                            )),
                        Padding(
@@ -155,21 +227,83 @@ class _MovieDetailsState extends State<MovieDetails> {
                            padding: const EdgeInsets.all(8.0),
                            child: InkWell(
                              onTap: () async{
-                               UserModel m = widget.userModel!;
-                               List<dynamic> l = m.MoviesWatched!;
-                               //    print(m.MoviesInWatchList);
-                               if(l.contains(movie.MovieId)){
-                                 m.MoviesWatched?.remove(movie.MovieId!);
-                               }
-                               else {
-                                 m.MoviesWatched?.add(movie.MovieId!);
-                               }
-                               setState(() {
-                                 x=m;
-                               });
-                               // print(movie.MovieId!);
-                               // print(m.MoviesInWatchList);
-                               await FirebaseFirestore.instance.collection("users").doc(widget.userModel?.uid).set(m.toMap());
+                               showDialog(context: (context),
+                                   builder: (BuildContext context)=>AlertDialog(
+                                     title: Text("Rate movie"),
+                                     content: TextField(
+                                       controller: controller,
+                                       keyboardType: TextInputType.number,
+                                       onChanged: (String value){
+                                         int x;
+
+                                         if(value==""){
+                                           x=0;
+                                         }
+                                         else {
+                                           x = int.parse(value);
+                                         }
+                                         if(x>=min && x<=max){
+                                           val=x;
+                                         }
+                                         else{
+                                           controller.text="10";
+                                         }
+
+                                       },
+                                     ),
+                                     actions: [
+                                       TextButton(
+                                         onPressed: () => Navigator.pop(context, 'Cancel'),
+                                         child: const Text('Cancel'),
+                                       ),
+                                       TextButton(
+                                         onPressed: () async
+                                         {
+                                           print(val);
+                                           UserModel m = widget.userModel!;
+                                           //  List<dynamic> l = m.MoviesWatched;
+                                           List l = m.MoviesWatched;
+                                           //    print(m.MoviesInWatchList);
+                                           int j=-1;
+                                           for(int i=0;i<l.length;i++){
+                                             if(l[i].containsKey(movie.MovieId.toString())){
+                                               j=i;
+                                             }
+                                           }
+                                           if(j!=-1){
+                                             m.MoviesWatched[j][movie.MovieId.toString()]=val.toString();
+                                             m.MoviesWatchedandRated[j][movie.MovieName.toString()]=val.toString();
+                                           }
+                                           else {
+                                             m.MoviesWatchedandRated.add({movie.MovieName.toString():val.toString()});
+                                             //    m.MoviesWatched?.add(movie.MovieId!);
+                                           }
+                                           setState(() {
+                                             x=m;
+                                           });
+
+                                           await FirebaseFirestore.instance.collection("users").doc(widget.userModel?.uid).set(m.toMap());
+
+                                           Navigator.pop(context, 'OK');
+                                         },
+                                         child: const Text('OK'),
+                                       ),
+                                     ],
+                                   ));
+                             //   UserModel m = widget.userModel!;
+                             //   List<dynamic> l = m.MoviesWatched;
+                             //   //    print(m.MoviesInWatchList);
+                             //   if(l.contains(movie.MovieId)){
+                             //     m.MoviesWatched.remove(movie.MovieId!);
+                             //   }
+                             //   else {
+                             // //    m.MoviesWatched?.add(movie.MovieId!);
+                             //   }
+                             //   setState(() {
+                             //     x=m;
+                             //   });
+                             //
+                             //   await FirebaseFirestore.instance.collection("users").doc(widget.userModel?.uid).set(m.toMap());
 
 
                              },
@@ -180,7 +314,19 @@ class _MovieDetailsState extends State<MovieDetails> {
                                    borderRadius: BorderRadius.circular(10.0),
                                    color: const Color(0xaa3C3261)),
                                child: Icon(
-                                 x.MoviesWatched!.contains(movie.MovieId!) ? Icons.remove_red_eye:Icons.remove_red_eye_outlined,
+                                 ((){
+                                   int u=0;
+                                   for(int i=0;i<x.MoviesWatched.length;i++){
+                                     if(x.MoviesWatched[i].containsKey(movie.MovieId!)){
+                                       u=1;
+                                       return Icons.remove_red_eye;
+                                     }
+                                   }
+
+                                   return u==0?Icons.remove_red_eye_outlined:Icons.remove_red_eye;
+                                 }()),
+                                 //Icons.remove_red_eye,
+                              //   x.MoviesWatched!.contains(movie.MovieId!) ? Icons.remove_red_eye:Icons.remove_red_eye_outlined,
                                  color: Colors.white,
                                ),
                              ),

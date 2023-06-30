@@ -1,4 +1,5 @@
 
+
 import 'dart:typed_data';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,7 +15,11 @@ class FirebaseHelper{
     UserModel? user;
     DocumentSnapshot docsnap=await FirebaseFirestore.instance.collection('users').doc(uid).get();
     if(docsnap.data()!=null){
+    //  var x=docsnap.get("MoviesWatched");
+    //  print(x);
+      //print(docsnap.data()!['MoviesWatched'] as Map<dynamic,dynamic>);
       user = UserModel.fromMap(docsnap.data() as Map<String,dynamic>);
+
     }
     return user;
   }

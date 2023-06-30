@@ -27,8 +27,12 @@ def returncollab():
         url = 'https://api.themoviedb.org/3/movie/{id}?api_key={api_key}'.format(
             api_key=api_key, id=i)
         res = requests.get(url)
+
         res = res.json()
         m.append(res)
+    print("hi")
+    print(m)
+    print("hi")
     d['output'] = m
     return d
 

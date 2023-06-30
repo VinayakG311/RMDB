@@ -15,13 +15,37 @@ from nltk.corpus import wordnet
 from surprise import Reader, Dataset, SVD
 from surprise.model_selection import cross_validate
 import requests
+# import firebase_admin
+# from firebase_admin import credentials
+# from firebase_admin import firestore
+# cred = credentials.Certificate("rmdb-fed2d-firebase-adminsdk-b3idn-5bc8b71d4b.json")
+# firebase_admin.initialize_app(cred)
+# firestore_client = firestore.client()
 import warnings
 warnings.simplefilter('ignore')
 
 ratings = pd.read_csv("Data/ml-25m/ratings.csv")
 movies = pd.read_csv("Data/ml-25m/movies.csv")
 links=pd.read_csv("Data/ml-25m/links.csv")
-
+# doc = firestore_client.collection('users').document("Q2lTkA7IQhTOiFPoSjjou3YckHK2").get().to_dict()
+#
+# moviesWatched = doc['MoviesWatched'][1:]
+#
+# dict={}
+# userid=100000
+# dict['userId']=[]
+# dict['movieId']=[]
+# dict['rating']=[]
+# for i in moviesWatched:
+#     for k,v in i.items():
+#        # print(k,v)
+#         id=(links.loc[links['tmdbId']==int(k)]['movieId'])
+#         idl=id.to_list()
+#         dict['userId'].append(userid)
+#         dict['movieId'].append(idl[0])
+#         dict['rating'].append(v)
+# v=pd.DataFrame.from_dict(dict)
+# links.append(v)
 def clean_title(title):
     title = re.sub("[^a-zA-Z0-9 ]", "", title)
     return title

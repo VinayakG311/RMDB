@@ -5,8 +5,6 @@ import 'loginRegister/registration_screen.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static const String id ="welcome_screen";
-
-  const WelcomeScreen({super.key});
   // final UserModel? userModel;
   // final User? firebaseUser;
 
