@@ -30,6 +30,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   flutter:
+
     sdk: flutter
   http:
 
@@ -62,6 +63,10 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  fonts:
+    - family: Urbanist
+      fonts:
+        - asset: fonts/Urbanist-VariableFont_wght.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:

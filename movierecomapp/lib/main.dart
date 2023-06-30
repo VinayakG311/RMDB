@@ -73,12 +73,13 @@ class RMDBLoggedin extends StatelessWidget {
         brightness: Brightness.dark,
         /* dark theme settings */
       ),
+
       themeMode: ThemeMode.dark,
       initialRoute: MyApp.id,
       routes: {
         MyApp.id:(context)=>MyApp(firebaseuser: firebaseuser,userModel: userModel),
-        MovieDetails.id:(context)=>const MovieDetails(),
-        ProfileScreen.id:(context)=>const ProfileScreen(),
+        MovieDetails.id:(context)=>MovieDetails(firebaseuser: firebaseuser,userModel: userModel),
+        ProfileScreen.id:(context)=>ProfileScreen(firebaseuser: firebaseuser,userModel: userModel),
       },
     );
   }

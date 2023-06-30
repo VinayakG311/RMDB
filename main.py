@@ -77,6 +77,8 @@ def returnpopularmovie():
 def returngenre():
     d = {}
     inputchr = str(request.args['query'])
+  #  k=int(request.args.get("number"))
+
    # print(inputchr)
     l = recommendations_genre(inputchr)
   #  print(l)

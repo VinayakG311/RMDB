@@ -11,11 +11,17 @@ import 'MovieDetails.dart';
 import 'WelcomeScreen.dart';
 import 'models.dart';
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key, this.firebaseuser, this.userModel});
   static const String id ="MyApp";
   final User? firebaseuser;
   final UserModel? userModel;
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -27,13 +33,15 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.dark,
       title: 'RMDB',
       //   theme: ThemeData(scaffoldBackgroundColor: const Color(0x00ffffff),appBarTheme: AppBarTheme(color: Colors.black)),
-      home: const MyHomePage(),
+      home: MyHomePage(firebaseuser: widget.firebaseuser,userModel: widget.userModel,),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({Key? key, this.firebaseuser, this.userModel}) : super(key: key);
+  final User? firebaseuser;
+  final UserModel? userModel;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -51,7 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
     String output='nothing';
 
     return Scaffold(
-      drawer: Drawers(),
+      drawer: const Drawers(),
       appBar: AppBar(
         centerTitle: false,
         //  leadingWidth: 0,
@@ -67,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
         titleSpacing: 0,
         actions: [Row(
           children: [
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(right: 8.0,top: 8,bottom: 8),
               child:           SizedBox(
                   height: 26,
@@ -79,12 +87,15 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   )),
             ),
-            InkWell(
-              onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ProfileScreen()));
-              },
-              child: CircleAvatar(
+            Padding(
+              padding: const EdgeInsets.only(right: 8.0),
+              child: InkWell(
+                onTap: (){
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context)=>ProfileScreen(firebaseuser: widget.firebaseuser,userModel: widget.userModel,)));
+                },
+                child: const CircleAvatar(
 
+                ),
               ),
             )
           ],
@@ -92,47 +103,61 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("Recommended for you"),
+            const Padding(
+              padding: EdgeInsets.all(15.0),
+              child: Text("Recommended for you",style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold),),
+            ),
+
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: const [
-                  MoveTile(url: 'http://127.0.0.1:5000/api/collabKNN?query=1',),
+                children: [
+                  MoveTile(url: 'http://127.0.0.1:5000/api/collabKNN?query=1',firebaseuser: widget.firebaseuser,userModel: widget.userModel,),
                 ],
               ),
             ),
-            const Text("Coz you watched()"),
+            const Padding(
+              padding: EdgeInsets.all(15.0),
+              child: Text("Coz you watched Avatar",style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold),),
+            ),
+
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: const [
-                  MoveTile(url: 'http://127.0.0.1:5000/api/collaborative?query=Avatar',),
+                children: [
+                  MoveTile(url: 'http://127.0.0.1:5000/api/collaborative?query=Avatar',firebaseuser: widget.firebaseuser,userModel: widget.userModel,),
 
                 ],
               ),
             ),
-            const Text("Popular now"),
+            const Padding(
+              padding: EdgeInsets.all(15.0),
+              child: Text("Popular now",style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold),),
+            ),
+
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: const [
-                  MoveTile(url: 'http://127.0.0.1:5000/api/popularmovie',),
+                children:[
+                  MoveTile(url: 'http://127.0.0.1:5000/api/popularmovie',firebaseuser: widget.firebaseuser,userModel: widget.userModel,),
                 ],
               ),
             ),
-            const Text("Action"),
+            const Padding(
+              padding: EdgeInsets.all(15.0),
+              child: Text("Action",style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold),),
+            ),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-                children: const [
-                  MoveTile(url: 'http://127.0.0.1:5000/api/genre?query=Action',),
+                children:  [
+                  MoveTile(url: 'http://127.0.0.1:5000/api/genre?query=Action',firebaseuser: widget.firebaseuser,userModel: widget.userModel,),
 
                 ],
               ),
             ),
-            const Text("Put all others if wanna"),
-
 
 
 
@@ -143,16 +168,18 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 class MoveTile extends StatelessWidget {
-  const MoveTile({Key? key, required this.url}) : super(key: key);
+  const MoveTile({Key? key, required this.url, this.firebaseuser, this.userModel}) : super(key: key);
   final String url;
+  final User? firebaseuser;
+  final UserModel? userModel;
 
   @override
   Widget build(BuildContext context) {
     return url!=''?SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Container(
-        height: 200,
-        color: Colors.white24,
+        height: 350,
+        //color: Colors.white24,
         //  child: Text("data"),
         child: FutureBuilder<List<Movie>>(
           future: fetchdata(url),
@@ -171,22 +198,29 @@ class MoveTile extends StatelessWidget {
                     itemBuilder: (context,index){
                       //         print(snapshot.data![index].MovieName);
                       return InkWell(
-                        onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder:(context)=>MovieDetails(movie: snapshot.data![index]) ));
-                        },
-                        child: Card(
-                          color: Colors.white24,
-                          child: SizedBox(
-                            height: 350,
-                            width: 200,
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                    height: 170,
 
-                                    child: Center(child: Image.network("https://image.tmdb.org/t/p/w342"+snapshot.data![index].MovieUrl.toString()))),
-                                Text((snapshot.data![index].MovieName)!,overflow: TextOverflow.ellipsis,)
-                              ],
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder:(context)=>MovieDetails(movie: snapshot.data![index],firebaseuser: firebaseuser,userModel: userModel,) ));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Container(
+                      //    color: Color(0xff121212),
+                          //  elevation: 0,
+                             //color: Colors.transparent,
+                       //   color: Colors.white24,
+                            child: SizedBox(
+                              height: 700,
+                              width: 200,
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                      height: 300,
+                                      width: 210,
+                                      child: Center(child: Image.network("https://image.tmdb.org/t/p/w780"+snapshot.data![index].MovieUrl.toString()))),
+                                  Text((snapshot.data![index].MovieName)!,overflow: TextOverflow.ellipsis,)
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -211,8 +245,9 @@ class MoveTile extends StatelessWidget {
           },
         ),
       ),
-    ):Card(
-      color: Colors.white24,
+    )
+        :Card(
+    //  color: Colors.white24,
       child: SizedBox(
         height: 200,
         width: 200,

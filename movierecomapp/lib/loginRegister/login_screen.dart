@@ -104,6 +104,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 });}
                 catch(e){
                   print(e);
+                  setState(() {
+                    showspinner=false;
+                  });
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    behavior: SnackBarBehavior.fixed,
+                      content: Text(e.toString(),style: TextStyle(color: Colors.white),),
+                    backgroundColor: Colors.red,
+                  ));
                 }
               },Colors.black
               )

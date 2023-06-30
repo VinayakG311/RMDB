@@ -85,7 +85,7 @@ def recommendations_genre(genre):
 
     highly_rated_popular_movies['tmdbId'] = highly_rated_popular_movies['tmdbId'].apply(lambda x: int(x))
 
-    return highly_rated_popular_movies.sort_values('Views', ascending=False).head(10)
+    return highly_rated_popular_movies.sort_values('Views', ascending=False).head(50)
 
 refined_dataset = merged.groupby(by=['userId', 'title'], as_index=False).agg({"rating": "mean"})
 

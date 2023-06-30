@@ -13,8 +13,10 @@ class Movie{
   String? Tagline;
   double? VoteAverage;
   int? VoteCount;
+  int? MovieId;
 
   Movie.name(
+      this.MovieId,
       this.MovieName,
       this.MovieUrl,
       this.MovieSummary,
@@ -35,7 +37,6 @@ class Movie{
      //    print(genre);
         for(var i in genre){
           MovieGenre?.add(i["name"]);
-
         }
         isAdult=json['adult'];
         Lang=json['original_language'];
@@ -43,7 +44,7 @@ class Movie{
         Tagline=json['tagline'];
         VoteAverage=json['vote_average'];
         VoteCount=json['vote_count'];
-
+        MovieId=json['id'];
   }
 }
 
@@ -56,6 +57,8 @@ class UserModel{
   String? phoneNumber;
   String? DateOfBirth;
   String? Gender;
+  List<dynamic>? MoviesWatched=<int>[];
+  List<dynamic>? MoviesInWatchList=<int>[];
   bool? anonymity;
   UserModel({this.uid,this.firstname,this.email,this.phoneNumber});
   UserModel.fromMap(Map<String,dynamic> map){
@@ -67,6 +70,8 @@ class UserModel{
     DateOfBirth = map['DateofBirth'];
     Gender = map['Gender'];
     anonymity=map['anonymity'];
+    MoviesInWatchList=map['MoviesInWatchList'];
+    MoviesWatched=map['MoviesWatched'];
   }
   Map<String,dynamic> toMap(){
     return{
@@ -78,6 +83,8 @@ class UserModel{
       "DateofBirth":DateOfBirth,
       "Gender":Gender,
       "anonymity":anonymity,
+      "MoviesWatched":MoviesWatched,
+      "MoviesInWatchList":MoviesInWatchList
     };
 
   }
