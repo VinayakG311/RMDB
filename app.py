@@ -1,3 +1,5 @@
+import os
+
 import pandas
 
 from MovieRecommenderMovieLens import spell_correction, recommender_system, recommendations_genre, \
@@ -128,5 +130,4 @@ def returngenre():
     return d
 
 
-if __name__ == "__main__":
-    app.run()
+app.run(debug=False,host="0.0.0.0",port=int(os.getenv('PORT', 4444)))

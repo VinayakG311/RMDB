@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int selected=0;
   @override
   Widget build(BuildContext context) {
-    String url = 'http://127.0.0.1:5000/api/popularmovie';
+    String url = 'http://192.168.1.2:4444/api/popularmovie';
     late var data;
     String output='nothing';
     UserModel model = widget.userModel!;
@@ -126,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  MoveTile(url: 'http://127.0.0.1:5000/api/collabKNN?query=1',firebaseuser: widget.firebaseuser,userModel: widget.userModel,),
+                  MoveTile(url: 'http://192.168.1.2:4444/api/collabKNN?query=1',firebaseuser: widget.firebaseuser,userModel: widget.userModel,),
                 ],
               ),
             ),
@@ -163,7 +163,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: Row(
                         children: [
                           MoveTile(
-                            url: 'http://127.0.0.1:5000/api/collaborative?query=${d[i]}',
+                            url: 'http://192.168.1.2:4444/api/collaborative?query=${d[i]}',
                             firebaseuser: widget.firebaseuser,
                             userModel: widget.userModel,),
 
@@ -185,7 +185,7 @@ class _MyHomePageState extends State<MyHomePage> {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children:[
-                  MoveTile(url: 'http://127.0.0.1:5000/api/popularmovie',firebaseuser: widget.firebaseuser,userModel: widget.userModel,),
+                  MoveTile(url: 'http://192.168.1.2:4444/api/popularmovie',firebaseuser: widget.firebaseuser,userModel: widget.userModel,),
                 ],
               ),
             ),
@@ -197,7 +197,7 @@ class _MyHomePageState extends State<MyHomePage> {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children:  [
-                  MoveTile(url: 'http://127.0.0.1:5000/api/genre?query=Action',firebaseuser: widget.firebaseuser,userModel: widget.userModel,),
+                  MoveTile(url: 'http://192.168.1.2:4444/api/genre?query=Action',firebaseuser: widget.firebaseuser,userModel: widget.userModel,),
 
                 ],
               ),
