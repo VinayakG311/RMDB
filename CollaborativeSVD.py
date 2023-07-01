@@ -1,3 +1,5 @@
+import re
+
 import numpy as np
 import pandas as pd
 from keras.losses import cosine_similarity
@@ -10,6 +12,9 @@ merged_dataset = pd.merge(ratings, movies, how='inner', on='movieId')
 refined_dataset = merged_dataset.groupby(by=['userId', 'title'], as_index=False).agg({"rating": "mean"})
 
 unique_users = refined_dataset['userId'].unique()
+
+
+
 unique_movies = refined_dataset['title'].unique()
 users_list = refined_dataset['userId'].tolist()
 movie_list = refined_dataset['title'].tolist()
@@ -83,7 +88,7 @@ class invalid(Exception):
 
 
 #
-def recommender(movie_name,num_recom):
+def recommender(movie_name, num_recom):
     try:
         movie_name_lower = movie_name.lower()
         if movie_name_lower not in case_insensitive_movies_list:
@@ -100,11 +105,7 @@ def recommender(movie_name,num_recom):
             print("Movie name entered is does not exist in the list ")
         else:
             indices = [case_insensitive_movies_list.index(i) for i in possible_movies]
-            print(
-                "Entered Movie name is not matching with any movie from the dataset . Please check the below suggestions :\n",
-                [unique_movies[i] for i in indices])
-            print("")
-
+            get_similar_movies(unique_movies[indices[0]], num_recom)
 
 
 

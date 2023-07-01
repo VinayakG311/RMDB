@@ -67,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
       var entry = movies[i].keys.forEach((element) {
         e = element;
       });
-      print(e);
+
       d.add(e);
     }
     return Scaffold(
@@ -301,8 +301,8 @@ Future<List<Movie>> fetchdata(String url) async {
   Response response = await get(Uri.parse(url));
   var decoded1 = jsonDecode(response.body);
   List decoded = decoded1["output"];
-  print(url);
-  print(decoded);
+  //print(url);
+ // print(decoded);
   List<Movie> x = [];
   var m = decoded.map((e) {
     // print("object");
@@ -313,7 +313,7 @@ Future<List<Movie>> fetchdata(String url) async {
  //   print(er);
     x.add(er);
   });
-   print(m);
+  print(m);
   // print(x);
 
   return x;

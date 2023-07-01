@@ -6,6 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:movierecomapp/models.dart';
 
+import 'MyApp.dart';
+
 class MovieDetails extends StatefulWidget {
   const MovieDetails({Key? key,this.movie, this.userModel, this.firebaseuser}) : super(key: key);
   final UserModel? userModel;
@@ -29,7 +31,11 @@ class _MovieDetailsState extends State<MovieDetails> {
     int val=0;
     return Scaffold(
       appBar: AppBar(
-        leading: const BackButton(color: Colors.white,),
+        leading: BackButton(
+          onPressed: (){
+            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context)=>MyApp(firebaseuser: widget.firebaseuser,userModel: widget.userModel,)));
+          },
+          color: Colors.white,),
         title: const Padding(
           padding: EdgeInsets.only(left: 8.0),
           child: SizedBox(
