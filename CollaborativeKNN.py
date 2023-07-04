@@ -1,16 +1,21 @@
 import numpy as np
 import pandas as pd
 import tensorflow as tf
+from matplotlib import pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
-
+from keras.models import load_model
 
 movies = pd.read_csv("Data/ml-latest-small/movies.csv")
 ratings = pd.read_csv("Data/ml-latest-small/ratings.csv")
 links = pd.read_csv("Data/ml-latest-small/links.csv")
 
 merged_dataset = pd.merge(ratings, movies, how='inner', on='movieId')
+
+
+#
 refined_dataset = merged_dataset.groupby(by=['userId', 'title'], as_index=False).agg({"rating": "mean"})
+
 user_enc = LabelEncoder()
 refined_dataset['user'] = user_enc.fit_transform(refined_dataset['userId'].values)
 n_users = refined_dataset['user'].nunique()
@@ -43,7 +48,9 @@ def recommender_systemknn(user_id, model, n_movies):
                      i not in seen_movies]
     model_input = [np.asarray(list(encoded_user_id) * len(unseen_movies)), np.asarray(unseen_movies)]
     predicted_ratings = model.predict(model_input)
+
     predicted_ratings = np.max(predicted_ratings, axis=1)
+
     sorted_index = np.argsort(predicted_ratings)[::-1]
     recommended_movies = item_enc.inverse_transform(sorted_index)
     dataset=pd.DataFrame()
@@ -53,10 +60,10 @@ def recommender_systemknn(user_id, model, n_movies):
     dataset['tmdbId']=dataset['tmdbId'].apply(lambda x:int(x))
     return dataset
 
-
-#recommender_systemknn(100000,load_model("Moviemodel.model"),15)
-
-#MODEL
+# recommender_systemknn(1,load_model('Moviemodel.model'),10)
+# #recommender_systemknn(100000,load_model("Moviemodel.model"),15)
+#
+# #MODEL
 # u = tf.keras.layers.Embedding(n_users, n_factors, embeddings_initializer='he_normal',
 #                               embeddings_regularizer=tf.keras.regularizers.l2(1e-6))(user)
 # u = tf.keras.layers.Reshape((n_factors,))(u)
