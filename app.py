@@ -1,15 +1,10 @@
 import os
-
-import pandas
-
-from MovieRecommenderMovieLens import spell_correction, recommender_system, recommendations_genre, \
-    get_highly_rated_popular_movies
+from MovieRecommenderMovieLens import recommendations_genre, get_highly_rated_popular_movies
 import requests
-
 from Collaborative import getsimilarmovie
 from CollaborativeKNN import recommender_systemknn
-from CollaborativeSVD import recommender
-from flask import Flask, request, jsonify
+
+from flask import Flask, request
 from keras.models import load_model
 
 app = Flask(__name__)
@@ -66,30 +61,7 @@ def returncollabKNN():
     return d
 
 
-@app.route('/api/collabSVD', methods=['GET'])
-def returncollabSVD():
-    d = {}
-    inputchr = str(request.args['query'])
-    l = recommender(inputchr,15)
-    movies = l['tmdbId'].tolist()
 
-    m = []
-    for i in movies:
-        url = 'https://api.themoviedb.org/3/movie/{id}?api_key={api_key}'.format(
-            api_key=api_key, id=i)
-        res = requests.get(url)
-
-        res = res.json()
-        m.append(res)
-
-    k=[]
-    for i in m:
-
-        if('success' not in i):
-            k.append(i)
-
-    d['output'] = k
-    return d
 
 
 @app.route('/api/popularmovie', methods=['GET'])

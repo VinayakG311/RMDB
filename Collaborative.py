@@ -1,20 +1,4 @@
-import ast
 import re
-
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-
-from scipy import stats
-from ast import literal_eval
-from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
-from sklearn.metrics.pairwise import linear_kernel, cosine_similarity
-from nltk.stem.snowball import SnowballStemmer
-from nltk.stem.wordnet import WordNetLemmatizer
-from nltk.corpus import wordnet
-from surprise import Reader, Dataset, SVD
-from surprise.model_selection import cross_validate
-import requests
 # import firebase_admin
 # from firebase_admin import credentials
 # from firebase_admin import firestore
@@ -22,6 +6,12 @@ import requests
 # firebase_admin.initialize_app(cred)
 # firestore_client = firestore.client()
 import warnings
+
+import numpy as np
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
 warnings.simplefilter('ignore')
 
 ratings = pd.read_csv("Data/ml-25m/ratings.csv")
